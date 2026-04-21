@@ -1,6 +1,6 @@
 import argparse
 import torch
-import tqdm
+from tqdm import tqdm
 import numpy as np
 from sklearn.metrics import roc_auc_score, cohen_kappa_score
 
@@ -133,20 +133,14 @@ def classify_func(model, model_source, dataloader, label_2_classname, templates,
                                           tokenize_func = tokenize_func,
                                           device = device)
     probs, gts, preds = [], [], []
-    for images, labels, _ in tqdm.tqdm(dataloader):
+    for images, labels, _ in tqdm(dataloader):
         images = images.to(device)
 
         if model_source == 'openai':
             image_features = model.encode_image(images)
         else:
             raise ValueError(f'Model source: {model_source}')
-            
-        image_features = model(
-                        image=images, 
-                        out_norm=True,
-                        with_head=True  # head must be used for zero-shot task
-                        )[0]
-        
+
         image_features /= image_features.norm(dim=-1, keepdim=True)
 
         mul_similarity = _cosine_similarity(image_features, text_features)

@@ -80,7 +80,7 @@ def _get_text_embeddings(model, model_source, tokenize_func, texts, device):
     return text_embeddings
 
 @torch.no_grad()
-def retieval_func(model, model_source, tokenize_func, dataloader, device, recall_k_list):
+def retrieval_func(model, model_source, tokenize_func, dataloader, device, recall_k_list):
     n_gpu = torch.cuda.device_count()
     device = 'cuda' if n_gpu>0 else 'cpu'
     model = model.to(device)
@@ -93,9 +93,8 @@ def retieval_func(model, model_source, tokenize_func, dataloader, device, recall
     metrics = {}
     num_total = len(dataloader)
     for idx, (batch_images, batch_i2t_idx) in tqdm(enumerate(dataloader)):
-        with torch.no_grad():            
-            batch_images_emb = _get_image_embeddings(model, model_source, batch_images.to(device)).detach()
-        scores = batch_images_emb @text_embeddings.t()
+        batch_images_emb = _get_image_embeddings(model, model_source, batch_images.to(device))
+        scores = batch_images_emb @ text_embeddings.t()
         all_i2tscores.append(scores)
         all_i2tinds.append(batch_i2t_idx.to(device))
         print(f'[{idx+1}/{num_total}]')
@@ -134,9 +133,9 @@ if __name__ == "__main__":
                                     data=args.data, 
                                     batch_size=args.batch_size, 
                                     num_workers=args.num_workers)
-    metrics = retieval_func(model, 
-                            model_source = args.pretrained_source, 
-                            tokenize_func = tokenize_func, 
-                            dataloader = dataloader, 
-                            recall_k_list = [1,5,10,20])
+    metrics = retrieval_func(model,
+                            model_source=args.pretrained_source,
+                            tokenize_func=tokenize_func,
+                            dataloader=dataloader,
+                            recall_k_list=[1, 5, 10, 20])
     print(metrics)

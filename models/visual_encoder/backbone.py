@@ -1,6 +1,7 @@
+import os
+
 import open_clip
 from transformers import CLIPProcessor, CLIPModel
-import os
 
 VISUAL_BACKBONE = ['ENLIGHT', 'PLIP', 'BiomedCLIP',  'QUILT-B32', 'QUILT-B16', 'VIRCHOW',  'HOPT',  'MUSK', 'PRISM', 'CONCH', 'LUNIT', 'UNI', 'GIGA', 'CHIEF']
 
@@ -90,7 +91,7 @@ def load_model_preprocess(backbone, ckpt_path, cache_dir):
     load_fn, _ = _REGISTRY[backbone]
     model, preprocess = load_fn(ckpt_path, cache_dir)
     model_size_mb = sum(p.numel() for p in model.parameters() if p.requires_grad) * 4 // (1024 ** 2)
-    print(model_size_mb, 'MB')
+    print(f'{model_size_mb} MB')
     return model, preprocess
 
 

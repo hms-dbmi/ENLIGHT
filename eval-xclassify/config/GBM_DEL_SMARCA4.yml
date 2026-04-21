@@ -1,0 +1,11 @@
+#model
+backbone: GIGA,CONCH,CHIEF,UNI,LUNIT,VIRCHOW,HOPT,ENLIGHT
+model: MABMIL
+D_inner: 1024
+n_class: 2
+#ckpt
+ckpt_classifier: classifier/gbm_del_SMARCA4_f1.ckpt
+ckpt_lmm: enlight-fm
+#data
+cancer_prob_thresh: 0.3
+classify_classes: SMARCA4_Not_Deleted,SMARCA4_Deleted

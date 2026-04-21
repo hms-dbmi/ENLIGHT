@@ -21,7 +21,6 @@ def init_hdf5_bag(h5_path, first_patch, patch_key='imgs', coord_x_y=None, patch_
                                 shape=img_shape, maxshape=maxshape,  chunks=img_shape, dtype=dtype)
 
     dset[:] = img_patch
-    # dset.attrs['feat_extractor'] = 'conch'
 
     if coord_x_y is not None:
         coord_dset = file.create_dataset('coords', shape=(num_patch, coord_dim), maxshape=(None, coord_dim), chunks=(num_patch, coord_dim), dtype=np.int32)
@@ -31,13 +30,10 @@ def init_hdf5_bag(h5_path, first_patch, patch_key='imgs', coord_x_y=None, patch_
 
 def read_hdf5(h5_path, idx=None, key='imgs'):
     with h5py.File(h5_path, 'r') as f:
-        # print(f['imgs'].shape)
-        if idx == None:
+        if idx is None:
             data = np.array(f[key])
         else:
             data = f[key][idx]
-        # description = f.attrs['feat_extractor']
-        # print(description)
     return data
 
 def write_hdf5(h5_path, data, key='imgs', coords=None):

@@ -10,51 +10,50 @@ See [environment.md](environment.md) for setup instructions.
 
 ## Download checkpoints
 
-Download from
-Set the path to $CKPTDIR
+Download from [GoogleDrive](https://drive.google.com/drive/folders/1vp7jRgdy-SWwXx_4kuRqd3ZjIaLrW6c1?usp=drive_link) and set the path to $CKPTDIR
 
-## Download data example
+Or download via command line:
 
-Download from
-Set the path to $DATADIR
+```bash
+wget -r -nd "https://drive.google.com/drive/folders/1vp7jRgdy-SWwXx_4kuRqd3ZjIaLrW6c1?usp=drive_link" -P $CKPTDIR
+```
 
+## Download example data
 
-## Zero-shot classification
+Download from [GoogleDrive](https://drive.google.com/drive/folders/1xCp2AOyz_euA0W0jvHjtxSFJqKaLsD29?usp=drive_link) and set the path to $DATADIR
+
+Or download via command line:
+
+```bash
+wget -r -nd "https://drive.google.com/drive/folders/1xCp2AOyz_euA0W0jvHjtxSFJqKaLsD29?usp=drive_link" -P $DATADIR
+```
+
+## Zero-shot discrimination tasks
 
 See [eval-zeroshot/dataset.md](eval-zeroshot/dataset.md) for the full list of datasets and download links.
+Set the data path to $BASE
 
 ##### Evaluate cancer grading
 
-Set path to $BASE
 ```
 python eval-zeroshot/zeroshot_classification.py --database $BASE --data AGGC22 --pretrained_path $CKPTDIR/enlight-fm/enlight-visual-encoder.pt --task grading
 ```
 
 ##### Evaluate microenvironment classification
 
-Set path to $BASE
-
 ```
 python eval/zeroshot_classification.py --database $BASE --data SPIDER_colon --pretrained_path $CKPTDIR/enlight-fm/enlight-visual-encoder.pt 
 ```
 
-## Zero-shot retrieval
-
-##### Download datasets
-
-TCGA-UT: https://zenodo.org/records/5889558##.YuJHdd_RaUk
-
-Set path to $BASE
-
-##### Evaulate image2text, text2image retrieval
+##### Evaluate image-to-text and text-to-image retrieval
 
 ```
 python eval/zeroshot_retrieval.py --database $BASE --data ut-0 --pretrained_path $CKPTDIR/enlight-fm/enlight-visual-encoder.pt
 ```
 
-## Visual question answering
+## Generation tasks
 
-### Patch-image QA benchmarks
+### Patch-level VQA
 
 ##### Download dataset
 
@@ -62,43 +61,83 @@ PathMMU: https://huggingface.co/datasets/jamessyx/PathMMU
 
 PathVQA: https://huggingface.co/datasets/dz-osamu/PathVQA
 
-Set path to $IMG_DIR
+Set the path to $IMG_DIR
 
-##### Preprocess to format
-
-```
-python eval-vqa/format_vqa_batch_infer.py $IMG_DIR pathmmu
-```
-
-##### Infer to answer
+##### Preprocess to inference format
 
 ```
-BASE=$IMG_DIR CKPTDIR=$CKPTDIR bash eval/vqa_batch_infer-pathmmu.sh
+python eval-generation/format_vqa_batch.py $IMG_DIR pathmmu
 ```
 
-### Slide QA Example
+##### Batch infer to answer
 
 ```
-CKPTDIR=$CKPTDIR DATADIR=$DATADIR bash eval-vqa/vqa_infer_slide.sh
+BASE=$IMG_DIR CKPTDIR=$CKPTDIR bash eval-generation/vqa_pathmmu.sh
 ```
 
-## Explainable Classification
+### Slide-level VQA
+
+Explicitly cropped
+```
+CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/vqa_slide.sh
+```
+
+Raw SVS (not cropped)
+```
+CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
+```
+
+### Slide-level report generation
+
+Explicitly cropped
+```
+CKPTDIR=$CKPTDIR SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/report_generate_slide.sh
+```
+
+Raw SVS (not cropped)
+```
+CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
+```
+
+## Explainable Classification tasks
+
+### Feature extraction for slides (optional)
+
+Alternatively, the pre-extracted `*_Feat8.h5` files downloaded in $DATADIR can be used directly for the steps below.
+
+Extract ENLIGHT features from cropped slide patch
+
+```
+CKPTDIR=$CKPTDIR SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash preprocess/slide_visualenc.sh
+```
+
+Extract ENLIGHT features from raw SVS (not cropped)
+
+```
+CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash preprocess/slide_visualenc.sh
+```
+
+Extract features from additional backbones: GIGA, CONCH, CHIEF, UNI, LUNIT, VIRCHOW, HOPT
+
 
 ### Classify and Explain Subtyping
 
 ```
-CKPTDIR=$CKPTDIR DATADIR=$DATADIR bash eval-xclassify/explain_classify.sh
+CKPTDIR=$CKPTDIR SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash eval-xclassify/explain_subtype.sh
 ```
 
 ### Classify and Explain Molecular Alteration
 
 ```
-CKPTDIR=$CKPTDIR DATADIR=$DATADIR bash eval-xclassify/explain_classify.sh
+CKPTDIR=$CKPTDIR SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash eval-xclassify/explain_molecular.sh
 ```
+
 
 ## Acknowledgements
 
-We thank the open-source repositories as below:
+We thank the following open-source repositories:
+
+[DSMIL](https://github.com/binli123/dsmil-wsi)
 
 [open_clip](https://github.com/mlfoundations/open_clip)
 

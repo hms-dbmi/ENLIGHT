@@ -7,7 +7,7 @@ import json
 from tqdm import tqdm
 from torch.utils.data import DataLoader, Dataset
 
-from .clip_label_defs import LABEL_2_PROMPT
+from datasets.clip_label_defs import LABEL_2_PROMPT
 
 
 def load_spider_colon(database):
