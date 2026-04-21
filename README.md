@@ -77,47 +77,47 @@ BASE=$IMG_DIR CKPTDIR=$CKPTDIR bash eval-generation/vqa_pathmmu.sh
 
 ### Slide-level VQA
 
-Explicitly cropped
+##### From explicitly cropped H5 file
 ```
 CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/vqa_slide.sh
 ```
 
-Raw SVS (not cropped)
+##### Or from raw SVS
 ```
 CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
 ```
 
 ### Slide-level report generation
 
-Explicitly cropped
+##### From explicitly cropped H5 file
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/report_generate_slide.sh
 ```
 
-Raw SVS (not cropped)
+##### Or from raw SVS
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
 ```
 
 ## Explainable Classification tasks
 
-### Feature extraction for slides (optional)
+### Feature extraction for slides 
 
 Alternatively, the pre-extracted `*_Feat8.h5` files downloaded in $DATADIR can be used directly for the steps below.
 
-Extract ENLIGHT features from cropped slide patch
+(optional) Extract ENLIGHT features from cropped slide patch
 
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash preprocess/slide_visualenc.sh
 ```
 
-Extract ENLIGHT features from raw SVS (not cropped)
+(optional) Extract ENLIGHT features from raw SVS
 
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash preprocess/slide_visualenc.sh
 ```
 
-Extract features from additional backbones: GIGA, CONCH, CHIEF, UNI, LUNIT, VIRCHOW, HOPT
+(optional) Extract features from additional backbones: GIGA, CONCH, CHIEF, UNI, LUNIT, VIRCHOW, HOPT
 
 
 ### Classify and Explain Subtyping
