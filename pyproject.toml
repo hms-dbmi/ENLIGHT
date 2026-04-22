@@ -13,7 +13,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
 ]
 dependencies = [
-    "torch==2.1.2", "torchvision==0.16.2",
+    "torch==2.8.0", "torchvision==0.16.2",
     "transformers>=4.45.0,<5.0", "tokenizers>=0.19,<0.21", "huggingface_hub>=0.23.2,<1.0",
     "sentencepiece==0.1.99", "shortuuid", "gdown",
     "accelerate>=1.1.0", "peft==0.13.2", "bitsandbytes",
