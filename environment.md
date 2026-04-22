@@ -2,9 +2,12 @@
 
 ## Quick install (conda + pip)
 
+Run from the **project root** (so that `-e .` resolves correctly):
+
 ```bash
 conda env create -f environment.yml
 conda activate enlight
+pip install -e .          # editable install of the enlight package
 ```
 
 Or manually:
@@ -15,10 +18,14 @@ conda activate enlight
 pip install --upgrade pip
 pip install -e .
 pip install open-clip-torch==2.23.0
-pip install "accelerate>=1.1.0"
-pip install "peft==0.13.2"
-pip install "transformers>=4.45.0" "protobuf==3.20.3"
+pip install "transformers>=4.45.0,<5.0" "tokenizers>=0.19,<0.21" "huggingface_hub>=0.23.2,<1.0"
+pip install "accelerate>=1.1.0" "peft==0.13.2" "protobuf==3.20.3"
 ```
+
+> **Version constraints explained:**
+> - `transformers<5.0` — transformers 5.x requires `huggingface_hub>=1.3`, which conflicts with the rest of the stack
+> - `tokenizers>=0.19,<0.21` — transformers 4.45+ dropped support for tokenizers 0.15.x
+> - `huggingface_hub>=0.23.2,<1.0` — explicit upper bound prevents pip from pulling in a 5.x-compatible version
 
 ---
 
@@ -59,15 +66,6 @@ pip install flash_attn-2.3.3+cu118torch2.1cxx11abiFALSE-cp310-cp310-linux_x86_64
 ---
 
 ## Common version conflicts
-
-### protobuf
-
-`transformers>=4.45` pulls in a newer protobuf that conflicts with some
-gRPC-based tools. Pin it explicitly:
-
-```bash
-pip install "protobuf==3.20.3"
-```
 
 ### bitsandbytes on older GPUs (compute < 7.5)
 
