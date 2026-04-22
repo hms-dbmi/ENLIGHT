@@ -10,15 +10,16 @@ Gong X et al. Interpretable Multimodal AI for Grounded Cancer Pathology Diagnosi
 
 See [environment.md](environment.md) for setup instructions.
 
+
 ## Download checkpoints
 
-Download from [GoogleDrive](https://drive.google.com/file/d/1WBUTeukvDcxu6UWXGq6olgacFSULxHE3/view?usp=drive_link) and set the path to $CKPTDIR
+Download from [GoogleDrive](https://drive.google.com/file/d/1WBUTeukvDcxu6UWXGq6olgacFSULxHE3/view?usp=sharing) and set the path to $CKPTDIR
 
 Or download via command line:
 
 ```bash
-wget "https://drive.google.com/file/d/1WBUTeukvDcxu6UWXGq6olgacFSULxHE3/view?usp=drive_link" -O ckpts.zip
-unzip ckpts.zip -d $CKPTDIR
+gdown "1WBUTeukvDcxu6UWXGq6olgacFSULxHE3" -O ckpts.zip
+unzip ckpts.zip && mv ckpts/* $CKPTDIR/ && rmdir ckpts
 ```
 
 
@@ -29,9 +30,10 @@ Download from [GoogleDrive](https://drive.google.com/file/d/1WgSo2C86bnsR_cPukt-
 Or download via command line:
 
 ```bash
-wget "https://drive.google.com/file/d/1WgSo2C86bnsR_cPukt-52-25lbdLanrK/view?usp=drive_link" -O data.zip
-unzip data.zip -d $DATADIR
+gdown "1WgSo2C86bnsR_cPukt-52-25lbdLanrK" -O data.zip
+unzip data.zip && mv data/* $DATADIR/ && rmdir data
 ```
+
 
 ## Zero-shot classfication tasks
 
