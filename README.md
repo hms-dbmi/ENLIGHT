@@ -12,22 +12,25 @@ See [environment.md](environment.md) for setup instructions.
 
 ## Download checkpoints
 
-Download from [GoogleDrive](https://drive.google.com/drive/folders/1vp7jRgdy-SWwXx_4kuRqd3ZjIaLrW6c1?usp=drive_link) and set the path to $CKPTDIR
+Download from [GoogleDrive](https://drive.google.com/file/d/1WBUTeukvDcxu6UWXGq6olgacFSULxHE3/view?usp=drive_link) and set the path to $CKPTDIR
 
 Or download via command line:
 
 ```bash
-wget -r -nd "https://drive.google.com/drive/folders/1vp7jRgdy-SWwXx_4kuRqd3ZjIaLrW6c1?usp=drive_link" -P $CKPTDIR
+wget "https://drive.google.com/file/d/1WBUTeukvDcxu6UWXGq6olgacFSULxHE3/view?usp=drive_link" -O ckpts.zip
+unzip ckpts.zip -d $CKPTDIR
 ```
+
 
 ## Download example data
 
-Download from [GoogleDrive](https://drive.google.com/drive/folders/1xCp2AOyz_euA0W0jvHjtxSFJqKaLsD29?usp=drive_link) and set the path to $DATADIR
+Download from [GoogleDrive](https://drive.google.com/file/d/1WgSo2C86bnsR_cPukt-52-25lbdLanrK/view?usp=drive_link) and set the path to $DATADIR
 
 Or download via command line:
 
 ```bash
-wget -r -nd "https://drive.google.com/drive/folders/1xCp2AOyz_euA0W0jvHjtxSFJqKaLsD29?usp=drive_link" -P $DATADIR
+wget "https://drive.google.com/file/d/1WgSo2C86bnsR_cPukt-52-25lbdLanrK/view?usp=drive_link" -O data.zip
+unzip data.zip -d $DATADIR
 ```
 
 ## Zero-shot classfication tasks
