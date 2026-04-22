@@ -30,7 +30,7 @@ Or download via command line:
 wget -r -nd "https://drive.google.com/drive/folders/1xCp2AOyz_euA0W0jvHjtxSFJqKaLsD29?usp=drive_link" -P $DATADIR
 ```
 
-## Zero-shot discrimination tasks
+## Zero-shot classfication tasks
 
 See [eval-zeroshot/dataset.md](eval-zeroshot/dataset.md) for the full list of datasets and download links.
 Set the data path to $BASE
@@ -80,11 +80,13 @@ BASE=$IMG_DIR CKPTDIR=$CKPTDIR bash eval-generation/vqa_pathmmu.sh
 ### Slide-level VQA
 
 ##### From explicitly cropped H5 file
+
 ```
 CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/vqa_slide.sh
 ```
 
 ##### Or from raw SVS
+
 ```
 CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
 ```
@@ -92,18 +94,20 @@ CKPTDIR=$CKPTDIR QUESTION=$YourQuery SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash e
 ### Slide-level report generation
 
 ##### From explicitly cropped H5 file
+
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=1 SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 bash eval-generation/report_generate_slide.sh
 ```
 
 ##### Or from raw SVS
+
 ```
 CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_slide.sh
 ```
 
 ## Explainable Classification tasks
 
-### Feature extraction for slides 
+### Feature extraction for slides
 
 To get started quickly, this step can be skipped — the pre-extracted `*_Feat8.h5` files in $DATADIR are ready to use for the steps below.
 
@@ -121,19 +125,17 @@ CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH SLIDE_FEAT_PATH=$DATADIR/T
 
 (optional) Extract features from additional backbones: GIGA, CONCH, CHIEF, UNI, LUNIT, VIRCHOW, HOPT
 
-
-### Classify and Explain Subtyping
+### Predict and explain subtyping
 
 ```
 CKPTDIR=$CKPTDIR SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash eval-xclassify/explain_subtype.sh
 ```
 
-### Classify and Explain Molecular Alteration
+### Predict and explain molecular alteration
 
 ```
 CKPTDIR=$CKPTDIR SLIDE_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2.h5 SLIDE_FEAT_PATH=$DATADIR/TCGA-06-0122-01Z-00-DX2_Feat8.h5 bash eval-xclassify/explain_molecular.sh
 ```
-
 
 ## Acknowledgements
 
