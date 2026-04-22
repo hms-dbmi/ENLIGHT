@@ -103,7 +103,7 @@ CKPTDIR=$CKPTDIR SLIDE_CROPPED=0 SLIDE_PATH=$SVS_PATH bash eval-generation/vqa_s
 
 ### Feature extraction for slides 
 
-Alternatively, the pre-extracted `*_Feat8.h5` files downloaded in $DATADIR can be used directly for the steps below.
+To get started quickly, this step can be skipped — the pre-extracted `*_Feat8.h5` files in $DATADIR are ready to use for the steps below.
 
 (optional) Extract ENLIGHT features from cropped slide patch
 
